@@ -1,0 +1,182 @@
+
+#define A 37
+#define B 35
+#define C 33
+#define D 31
+
+#define ONES_DISPLAY 39
+#define TENS_DISPLAY 41
+#define HUNDREDS_DISPLAY 43
+
+volatile int mainEventFlags = 0;
+int delayTime = 1;
+int count=0;
+int digit=0;
+int speedval=0;
+void segdisplay(int, int);
+
+
+void setup(){
+    pinMode(A, OUTPUT);
+    pinMode(B, OUTPUT);
+    pinMode(C, OUTPUT);
+    pinMode(D, OUTPUT);
+    pinMode(ONES_DISPLAY, OUTPUT);
+    pinMode(TENS_DISPLAY, OUTPUT);
+    pinMode(HUNDREDS_DISPLAY, OUTPUT);
+}
+void loop(){
+    delay(delayTime);
+    
+    if (count < 1000){
+        count++;
+    }
+    else{
+        count = 0;
+      if(speedval>999){
+        speedval=0;
+      }
+      else{
+          speedval++;
+      }  
+          
+    }
+    
+    if(count%2==0){
+      digit=2;
+    }
+    else if(count%3==0){
+      digit=0;
+    }
+    else{
+      digit=1;
+    }
+    
+    
+    segdisplay(speedval, digit);
+}
+void segdisplay(int speedthing, int number){
+  int hundreds;
+  int tens;
+  int ones;
+  hundreds=speedthing/100;
+  if(speedthing>99){
+    tens=(speedthing-hundreds*100)/10;
+    ones=(speedthing-hundreds*100)-tens*10;
+  }
+  else{
+    tens=speedthing/10;
+    ones=speedthing-tens*10;
+  }
+  if(number==0){
+    digitalWrite(ONES_DISPLAY, HIGH);
+    digitalWrite(TENS_DISPLAY, LOW);
+    digitalWrite(HUNDREDS_DISPLAY, LOW);
+    switch(ones){
+      case 0: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, LOW);
+        break;
+      
+      case 1: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+        break;
+      
+      case 2: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, HIGH); digitalWrite(A, LOW);
+        break;
+      
+      case 3: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, HIGH); digitalWrite(A, HIGH);
+        break;
+      
+      case 4: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, LOW); digitalWrite(A, LOW);
+        break;
+      
+      case 5: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+        break;
+      
+      case 6: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, HIGH); digitalWrite(A, LOW);
+        break;
+        
+      case 7: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, HIGH); digitalWrite(A, HIGH);
+        break;
+        
+      case 8: digitalWrite(D, HIGH); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, LOW);
+        break;
+        
+      case 9: digitalWrite(D, HIGH); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+        break;
+        
+    }  
+  }
+    else if(number==1){
+      digitalWrite(ONES_DISPLAY, LOW);
+      digitalWrite(TENS_DISPLAY, HIGH);
+      digitalWrite(HUNDREDS_DISPLAY, LOW);
+      switch(tens){
+        case 0: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, LOW);
+          break;
+        
+        case 1: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+          break;
+        
+        case 2: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, HIGH); digitalWrite(A, LOW);
+          break;
+        
+        case 3: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, HIGH); digitalWrite(A, HIGH);
+          break;
+        
+        case 4: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, LOW); digitalWrite(A, LOW);
+          break;
+        
+        case 5: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+          break;
+        
+        case 6: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, HIGH); digitalWrite(A, LOW);
+          break;
+          
+        case 7: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, HIGH); digitalWrite(A, HIGH);
+          break;
+          
+        case 8: digitalWrite(D, HIGH); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, LOW);
+          break;
+          
+        case 9: digitalWrite(D, HIGH); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+          break;
+          
+      }  
+  }
+    else if(number==2){
+      digitalWrite(ONES_DISPLAY, LOW);
+      digitalWrite(TENS_DISPLAY, LOW);
+      digitalWrite(HUNDREDS_DISPLAY, HIGH);
+      switch(hundreds){
+        case 0: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, LOW);
+          break;
+        
+        case 1: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+          break;
+        
+        case 2: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, HIGH); digitalWrite(A, LOW);
+          break;
+        
+        case 3: digitalWrite(D, LOW); digitalWrite(C, LOW); digitalWrite(B, HIGH); digitalWrite(A, HIGH);
+          break;
+        
+        case 4: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, LOW); digitalWrite(A, LOW);
+          break;
+        
+        case 5: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+          break;
+        
+        case 6: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, HIGH); digitalWrite(A, LOW);
+          break;
+          
+        case 7: digitalWrite(D, LOW); digitalWrite(C, HIGH); digitalWrite(B, HIGH); digitalWrite(A, HIGH);
+          break;
+          
+        case 8: digitalWrite(D, HIGH); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, LOW);
+          break;
+          
+        case 9: digitalWrite(D, HIGH); digitalWrite(C, LOW); digitalWrite(B, LOW); digitalWrite(A, HIGH);
+          break;
+          
+      }  
+  }
+}
