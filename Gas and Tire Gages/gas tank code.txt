@@ -1,0 +1,121 @@
+
+
+// listing out which pins go to which row of LEDs
+const int row7 = 48;
+const int row6 = 47;
+const int row5 = 46; 
+const int row4 = 45;
+const int row3 = 44;
+const int row2 = 43;
+const int row1 = 42;
+
+//setting all of the pins to high initially
+int row1State = HIGH;
+int row2State = HIGH;
+int row3State = HIGH;
+int row4State = HIGH;
+int row5State = HIGH;
+int row6State = HIGH;
+int row7State = HIGH;
+
+//what the previous millis() count was.  used to compare against current millis() to find how much time has passe
+long previousMillis = 0;
+
+//states for the gas gage. 
+int state7 = 7;
+int state6 = 6;
+int state5 = 5;
+int state4 = 4;
+int state3 = 3;
+int state2 = 2; 
+int state1 = 1;
+
+int gasState = 7;
+
+//interval between flashes in milliseconds
+long interval = 1000;
+
+void setup(){
+  pinMode(row1, OUTPUT);
+  pinMode(row2, OUTPUT);
+  pinMode(row3, OUTPUT);
+  pinMode(row4, OUTPUT);
+  pinMode(row5, OUTPUT);
+  pinMode(row6, OUTPUT);
+  pinMode(row7, OUTPUT);
+  
+  //set all lights on initially
+  digitalWrite(row1, HIGH);
+  digitalWrite(row2, HIGH);
+  digitalWrite(row3, HIGH);
+  digitalWrite(row4, HIGH);
+  digitalWrite(row5, HIGH);
+  digitalWrite(row6, HIGH);
+  digitalWrite(row7, HIGH);
+  
+  //attach an interrupt
+  attachInterrupt(0, fillGas, FALLING);
+}
+
+void loop(){
+  
+
+  //used to compare against previousMillis to find time elapsed
+  unsigned long currentMillis = millis();
+  
+  //checks the interval between the last time a row turned off
+  if(currentMillis-previousMillis > interval){
+    previousMillis = currentMillis;
+    
+    if(gasState == state7){
+      digitalWrite(row7, LOW);
+      gasState = state6;
+    }    
+    else if(gasState == state6){
+      digitalWrite(row6, LOW);
+      gasState = state5;
+    }
+    else if(gasState == state5){
+      digitalWrite(row5, LOW);
+      gasState = state4;
+    }
+    else if(gasState == state4){
+      digitalWrite(row4, LOW);
+      gasState = state3;
+    }
+    else if(gasState == state3){
+      digitalWrite(row3, LOW);
+      gasState = state2;
+    }
+    else if(gasState == state2){
+      digitalWrite(row2, LOW);
+      gasState = state1;
+      interval = 500;
+    } 
+    else if(gasState == state1){
+      if(row1State == HIGH){
+        digitalWrite(row1, LOW);
+        row1State = LOW;
+      }
+      else if(row1State == LOW){
+        digitalWrite(row1, HIGH);
+        row1State = HIGH;
+    }
+    }
+    
+    
+    //digitalWrite(ledPin, ledState);
+  }
+}
+
+void fillGas(){
+  gasState = state7;
+  interval = 1000;
+  digitalWrite(row1, HIGH);
+  digitalWrite(row2, HIGH);
+  digitalWrite(row3, HIGH);
+  digitalWrite(row4, HIGH);
+  digitalWrite(row5, HIGH);
+  digitalWrite(row6, HIGH);
+  digitalWrite(row7, HIGH);
+}
